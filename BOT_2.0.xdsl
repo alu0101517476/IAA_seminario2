@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<smile version="1.0" id="Network1" numsamples="1000" discsamples="10000">
+	<nodes>
+		<cpt id="ST">
+			<state id="Attack" />
+			<state id="Search_Weapon" />
+			<state id="Search_Health" />
+			<state id="Explore" />
+			<state id="Flee" />
+			<state id="Detect_Danger" />
+			<probabilities>0.1666666666666667 0.1666666666666667 0.1666666666666667 0.1666666666666667 0.1666666666666667 0.1666666666666667</probabilities>
+		</cpt>
+		<cpt id="ST_1">
+			<state id="Attack" />
+			<state id="Search_Weapon" />
+			<state id="Search_Health" />
+			<state id="Explore" />
+			<state id="Flee" />
+			<state id="Detect_Danger" />
+			<parents>ST</parents>
+			<probabilities>0.3333155557925895 6.666577778962947e-006 6.666577778962947e-006 6.666577778962947e-006 0.6666577778962947 6.666577778924321e-006 0.1999928000431998 0.1999928000431998 5.999964000216e-006 5.999964000216e-006 0.5999964000215999 5.999964000080738e-006 0.1999906401572454 5.999899201693413e-006 0.3999956800725748 5.999899201693413e-006 0.3999956800725748 5.999899201580838e-006 0.1999928000431998 5.999964000215999e-006 5.999964000215999e-006 0.1999928000431998 0.5999964000215998 5.999964000302782e-006 0.2940996543602606 5.882228376340266e-006 5.882228376340266e-006 5.882228376340266e-006 0.7058768167262342 5.882228376163923e-006 0.1999928000431998 5.999964000215999e-006 5.999964000215999e-006 5.999964000215999e-006 0.5999964000215998 0.1999928000431998</probabilities>
+		</cpt>
+		<cpt id="Health">
+			<state id="Low" />
+			<state id="High" />
+			<parents>ST_1</parents>
+			<probabilities>0.2 0.8 0.5 0.5 0.95 0.05 0.3333333333333333 0.6666666666666667 0.625 0.375 0.5 0.5</probabilities>
+		</cpt>
+		<cpt id="Weapon">
+			<state id="Have" />
+			<state id="Dont_have" />
+			<parents>ST_1</parents>
+			<probabilities>1 0 0.1 0.9 0.4 0.6 0.6 0.4 0.3 0.7 0.95 0.05</probabilities>
+		</cpt>
+		<cpt id="Opponent_Weapon">
+			<state id="Has" />
+			<state id="Doesnt_have" />
+			<parents>ST_1</parents>
+			<probabilities>0.3 0.7 0.3 0.7 0.7 0.3 0.6 0.4 0.7 0.3 0.4 0.6</probabilities>
+		</cpt>
+		<cpt id="Hear_Noise">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>ST_1</parents>
+			<probabilities>0.7 0.3 0.6 0.4 0.7 0.3 0.3 0.7 0.7 0.3 0.6 0.4</probabilities>
+		</cpt>
+		<cpt id="Near_Enenmies">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>ST_1</parents>
+			<probabilities>1 0 0.4 0.6 0.7 0.3 0.1 0.9 1 0 0.3 0.7</probabilities>
+		</cpt>
+		<cpt id="Close_Weapon">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>ST_1</parents>
+			<probabilities>0.4999999999999999 0.5000000000000001 0.8749999999999998 0.1250000000000002 0.4999999999999999 0.5000000000000001 0.3 0.7 0.25 0.75 0.3333333333333333 0.6666666666666667</probabilities>
+		</cpt>
+		<cpt id="Close_HealthPack">
+			<state id="Yes" />
+			<state id="No" />
+			<parents>ST_1</parents>
+			<probabilities>0.6 0.4 0.4999999999999999 0.5000000000000001 0.8 0.2 0.1666666666666666 0.8333333333333334 0.3 0.7 0.4999999999999999 0.5000000000000001</probabilities>
+		</cpt>
+	</nodes>
+	<extensions>
+		<genie version="1.0" app="GeNIe 2.0.5406.0" name="Network1" faultnameformat="nodestate">
+			<node id="ST">
+				<name>ST</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>334 107 370 129</position>
+				<barchart active="true" width="172" height="126" />
+			</node>
+			<node id="ST_1">
+				<name>ST_1</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>771 102 814 128</position>
+				<barchart active="true" width="208" height="126" />
+			</node>
+			<node id="Health">
+				<name>Health</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>198 314 246 344</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Weapon">
+				<name>Weapon</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>676 318 732 353</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Opponent_Weapon">
+				<name>Opponent_Weapon</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>488 302 615 366</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Hear_Noise">
+				<name>Hear_Noise</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>980 316 1049 359</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Near_Enenmies">
+				<name>Near_Enenmies</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>1113 315 1231 364</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Close_Weapon">
+				<name>Close_Weapon</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>808 311 892 363</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+			<node id="Close_HealthPack">
+				<name>Close_HealthPack</name>
+				<interior color="e5f6f7" />
+				<outline color="000080" />
+				<font color="000000" name="Arial" size="8" />
+				<position>345 303 442 363</position>
+				<barchart active="true" width="128" height="64" />
+			</node>
+		</genie>
+	</extensions>
+</smile>

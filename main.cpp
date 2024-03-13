@@ -38,6 +38,8 @@ std::string InitialsToFullName(std::string initials) {
     return "Dont_have";
   } else if (initials == "DSTH" || initials == "Doesnt_have") {
     return "Doesnt_have";
+  } else if (initials == "NE" || initials == "No_Evidence") {
+    return "No_Evidence";
   } else {
     std::cout << "ERROR: Invalid option" << std::endl;
     exit(EXIT_FAILURE);
@@ -64,6 +66,7 @@ void initializeNetValues(DSL_network& net) {
       std::cin >> input;
       std::string new_input = InitialsToFullName(input);
       std::cout << "Chosen: " << new_input << '\n';
+      if (new_input != "No_")
       net.GetNode(i)->Val()->SetEvidence(new_input.c_str());
     }
   }

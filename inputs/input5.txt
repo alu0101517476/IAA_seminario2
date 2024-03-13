@@ -1,8 +1,8 @@
-Flee
-High
+Detect_Danger
+Low
 Have
-Has
-Yes
-Yes
+Doesnt_have
 No
+Yes
+Yes
 Yes

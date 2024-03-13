@@ -3,5 +3,6 @@ High
 Have
 Has
 Yes
-No
-No
+Yes
+Yes
+Yes

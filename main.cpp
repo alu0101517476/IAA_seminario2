@@ -66,7 +66,7 @@ void initializeNetValues(DSL_network& net) {
       std::cin >> input;
       std::string new_input = InitialsToFullName(input);
       std::cout << "Chosen: " << new_input << '\n';
-      if (new_input != "No_")
+      if (new_input != "No_Evidence")
       net.GetNode(i)->Val()->SetEvidence(new_input.c_str());
     }
   }

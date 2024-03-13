@@ -1,7 +1,7 @@
 Explore
 Low
 Have
-Hear_Noise
+Has
 No
 Yes
 Yes

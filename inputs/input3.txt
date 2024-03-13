@@ -1,0 +1,8 @@
+Explore
+Low
+Have
+Doesnt_have
+No
+Yes
+Yes
+No

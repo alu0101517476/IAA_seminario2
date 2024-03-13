@@ -1,0 +1,8 @@
+Search_Health
+Low
+Dont_have
+Has
+No
+Yes
+No
+Yes

@@ -1,0 +1,8 @@
+Search_Weapon
+Low
+Dont_have
+Doesnt_have
+No
+Yes
+Yes
+Yes

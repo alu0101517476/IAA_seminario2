@@ -44,7 +44,7 @@
 			<parents>ST_1</parents>
 			<probabilities>0.7 0.3 0.6 0.4 0.7 0.3 0.3 0.7 0.7 0.3 0.6 0.4</probabilities>
 		</cpt>
-		<cpt id="Near_Enenmies">
+		<cpt id="Near_Enemies">
 			<state id="Yes" />
 			<state id="No" />
 			<parents>ST_1</parents>
@@ -113,8 +113,8 @@
 				<position>980 316 1049 359</position>
 				<barchart active="true" width="128" height="64" />
 			</node>
-			<node id="Near_Enenmies">
-				<name>Near_Enenmies</name>
+			<node id="Near_Enemies">
+				<name>Near_Enemies</name>
 				<interior color="e5f6f7" />
 				<outline color="000080" />
 				<font color="000000" name="Arial" size="8" />

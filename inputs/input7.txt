@@ -1,0 +1,8 @@
+Attack
+Low
+Doesnt_have
+Has
+Yes
+No
+No
+Yes

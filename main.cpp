@@ -1,7 +1,11 @@
+#include <cstdio>
+#include <cstring>
 #include <iostream>
 #include <string>
-#include <vector>
 #include "./smile/smile.h"
+#include "smile/bs.h"
+#include "smile/dataset.h"
+#include "smile/general.h"
 #include "smile_license.h" // your licensing key
 
 /**
@@ -118,23 +122,58 @@ void NextST(DSL_network& net) {
   }
 }
 
+void printNet(const DSL_network* net) {
+  DSL_intArray nodes;
+  net->GetAllNodes(nodes);
+  for (int node_index = 0; node_index < nodes.GetSize(); node_index++) {
+    const DSL_node* node = net->GetNode(node_index);
+    const DSL_Dmatrix& beliefs = *node->Val()->GetMatrix();
+    const DSL_idArray& outcomes = *node->Def()->GetOutcomeIds();
+    printf("Node %s:\n", node->GetName());
+    for (int i = 0; i < outcomes.GetSize(); i++) {
+      printf("%s=%g\n", outcomes[i], beliefs[i]);
+    }
+  }
+}
+
+void dataFromFile(DSL_network* net, char* file_path) {
+  printf("Reading file '%s'...\n", file_path);
+  DSL_dataset ds;
+  int res = ds.ReadFile(file_path);
+  if (res != DSL_OKAY) {
+    printf("Datafile is not okay! Exit code %d\n", res);
+    exit(res);
+  }
+  DSL_bs bayesSearch;
+}
+
 /**
  * Main
 */
-int main() {
+int main(int argc, char** argv) {
   DSL_errorH().RedirectToFile(stdout);
   
   DSL_network net;
-  int res = net.ReadFile("BOT_2.0.xdsl");
+  int res = net.ReadFile("bots/BOT_7.3.xdsl");
   // No hay fallos en la red
   if (DSL_OKAY != res) { 
+    printf("Bot file is NOT okay!\n");
     return res;
   }
-  std::cout << "Enter values ​​for the following variables:" << std::endl;
-  initializeNetValues(net);
-  std::cout << "\nProbability of the next State:\n";
-  NextST(net);
-  std::cout << "\nProbability of the next State when time tends to infinite:\n";
-  STInfinite(net);
-  return DSL_OKAY; 
+  if (argc > 1) {
+    printf("Tables now:\n");
+    printNet(&net);
+    printf("Reading data from given file...\n");
+    dataFromFile(&net, argv[1]);
+    printf("Probability tables:\n");
+    return DSL_OKAY;
+  } else {
+    std::cout << "Enter values ​​for the following variables:" << std::endl;
+    initializeNetValues(net);
+    std::cout << "\nProbability of the next State:\n";
+    NextST(net);
+    std::cout << "\nProbability of the next State when time tends to infinite:\n";
+    STInfinite(net);
+    return DSL_OKAY; 
+  }
 }

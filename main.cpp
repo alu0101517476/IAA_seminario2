@@ -160,6 +160,7 @@ int main(int argc, char** argv) {
     printf("Bot file is NOT okay!\n");
     return res;
   }
+  /*
   if (argc > 1) {
     printf("Tables now:\n");
     printNet(&net);
@@ -167,7 +168,7 @@ int main(int argc, char** argv) {
     dataFromFile(&net, argv[1]);
     printf("Probability tables:\n");
     return DSL_OKAY;
-  } else {
+  } else*/ {
     std::cout << "Enter values ​​for the following variables:" << std::endl;
     initializeNetValues(net);
     std::cout << "\nProbability of the next State:\n";

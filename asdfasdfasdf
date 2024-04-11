@@ -1,0 +1,42 @@
+ST+1 <- ST 00
+
+recarm <- exp 17
+recarm <- huir 5
+recarm <- detpel 6
+
+receng <- a 28
+receng <- recar 3
+receng <- receng 6
+receng <- exp 11
+receng <- huir 38
+receng <- detecpel 9
+
+exp <- a 4
+exp <- recar 41
+exp <- receng 34
+exp <- exp 35
+exp <- huir 30
+exp <- detecpel 33
+
+huir <- a 3
+huir <- recar 1
+huir <- receng 3
+huir <- exp 0
+huir <- huir 12
+huir <- detecpel 4
+
+H <- ST+1 00
+
+Alta <- a 
+Alta <- recar 
+Alta <- receng 
+Alta <- exp 
+Alta <- huir 
+Alta <- detecpel 
+
+Baja <- a 
+Baja <- recar 
+Baja <- receng 
+Baja <- exp 
+Baja <- huir 
+Baja <- detecpel 

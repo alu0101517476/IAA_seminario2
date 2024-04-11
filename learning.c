@@ -1,5 +1,12 @@
 #include <stdio.h>
 
+/**
+  * cada funcion checkea un regexp con el q matchea
+  * contra la linea q le pasas
+  * y añade valores a sus tablas respectivamente
+  *
+  * luego de eso normalizar las tablas e imprimirlas ez pz
+  */
 void healthCheckLine(float** table, char* line);
 void hearNoiseCheckLine(float** table, char* line);
 void nearEnemiesCheckLine(float** table, char* line);

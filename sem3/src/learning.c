@@ -1,6 +1,7 @@
 #include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 enum STATE{
   Atacar,
@@ -44,6 +45,8 @@ void printTable(int n, int m, float table[n][m], char* row_names[n], char* colum
 void printColumn(int n, float table[n], char* row_names[n]);
 
 int main(int argc, char** argv) {
+  long time_took = clock();
+
   float health_table[2][6] = {{0}};
   float hear_noise_table[2][6] = {{0}};
   float near_enemies_table[2][6] = {{0}};
@@ -80,41 +83,37 @@ int main(int argc, char** argv) {
   char* yes_no_names[2] = {"yes", "no"};
   char* weapon_names[2] = {"armado", "desarm"};
 
-  printf("\nHEALTH:\n");
   normalizeTable(2, 6, health_table);
-  printTable(2, 6, health_table, health_names, state_names);
-
-  printf("\nHEAR NOISE:\n");
   normalizeTable(2, 6, hear_noise_table);
-  printTable(2, 6, hear_noise_table, yes_no_names, state_names);
-
-  printf("\nNEAR ENEMIES:\n");
   normalizeTable(2, 6, near_enemies_table);
-  printTable(2, 6, near_enemies_table, yes_no_names, state_names);
-
-  printf("\nOPPONENT WEAPON:\n");
   normalizeTable(2, 6, opponent_weapon_table);
-  printTable(2, 6, opponent_weapon_table, weapon_names, state_names);
-
-  printf("\nCLOSE HEALTH PACK:\n");
   normalizeTable(2, 6, close_health_table);
-  printTable(2, 6, close_health_table, yes_no_names, state_names);
-
-  printf("\nCLOSE WEAPON:\n");
   normalizeTable(2, 6, close_weapon_table);
-  printTable(2, 6, close_weapon_table, yes_no_names, state_names);
-
-  printf("\nST:\n");
   normalizeColumn(6, st_table);
-  printColumn(6, st_table, state_names);
-
-  printf("\nST+1:\n");
   normalizeTable(6, 6, st_1_table);
-  printTable(6, 6, st_1_table, state_names, state_names);
-
-  printf("\nWEAPON:\n");
   normalizeTable(2, 6, weapon_table);
+
+  printf("\nHEALTH:\n");
+  printTable(2, 6, health_table, health_names, state_names);
+  printf("\nHEAR NOISE:\n");
+  printTable(2, 6, hear_noise_table, yes_no_names, state_names);
+  printf("\nNEAR ENEMIES:\n");
+  printTable(2, 6, near_enemies_table, yes_no_names, state_names);
+  printf("\nOPPONENT WEAPON:\n");
+  printTable(2, 6, opponent_weapon_table, weapon_names, state_names);
+  printf("\nCLOSE HEALTH PACK:\n");
+  printTable(2, 6, close_health_table, yes_no_names, state_names);
+  printf("\nCLOSE WEAPON:\n");
+  printTable(2, 6, close_weapon_table, yes_no_names, state_names);
+  printf("\nST:\n");
+  printColumn(6, st_table, state_names);
+  printf("\nST+1:\n");
+  printTable(6, 6, st_1_table, state_names, state_names);
+  printf("\nWEAPON:\n");
   printTable(2, 6, weapon_table, weapon_names, state_names);
+
+  time_took = (clock() - time_took);
+  printf("\n\nTook: %f seconds\n", (double)time_took / CLOCKS_PER_SEC);
 }
 
 void normalizeTable(int n, int m, float table[n][m]) {
@@ -161,212 +160,101 @@ void printColumn(int n, float table[n], char* names[n]) {
   puts("");
 }
 
-void healthCheckLine(float table[2][6], char* line) {
+void checkLine(int n, int m, float table[n][m], char* rownames[n], char* colnames[m], int offset1, int offset2, char* line) {
   regex_t regex;
   regmatch_t match;
-  regcomp(&regex, "^Alta(,\\w*?){6},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Atacar]++;
-    return;
+  char regex_str[50];
+  for (int i = 0; i < n; i++) {
+    for (int j = 0; j < m; j++) {
+      sprintf(regex_str, "^(\\w*?,){%d}%s(,\\w*?){%d},%s", offset1, rownames[i], offset2, colnames[j]);
+      regcomp(&regex, regex_str, REG_EXTENDED);
+      if (!regexec(&regex, line, 1, &match, 0)) {
+        table[i][j]++;
+        return;
+      }
+    }
   }
-  regcomp(&regex, "^Alta(,\\w*?){6},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^Alta(,\\w*?){6},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^Alta(,\\w*?){6},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^Alta(,\\w*?){6},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^Alta(,\\w*?){6},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Alta][Detectar_Peligro]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Atacar]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^Baja(,\\w*?){6},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[Baja][Detectar_Peligro]++;
-    return;
-  }
+}
+
+void healthCheckLine(float table[2][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"Baja", "Alta"};
+  checkLine(2, 6, table, row_names, state_names, 0, 6, line);
 }
 
 void hearNoiseCheckLine(float table[2][6], char* line) {
-  regex_t regex;
-  regmatch_t match;
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Atacar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}si(,\\w*?){5},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Detectar_Peligro]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Atacar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){1}no(,\\w*?){5},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Detectar_Peligro]++;
-    return;
-  }
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"si", "no"};
+  checkLine(2, 6, table, row_names, state_names, 1, 5, line);
 }
 
 void nearEnemiesCheckLine(float table[2][6], char* line) {
-  regex_t regex;
-  regmatch_t match;
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Atacar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}si(,\\w*?){4},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[si][Detectar_Peligro]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Atacar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Atacar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Recoger_Armas", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Recoger_Armas]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Recoger_Energia", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Recoger_Energia]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Explorar", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Explorar]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Huir", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Huir]++;
-    return;
-  }
-  regcomp(&regex, "^(\\w*?,){2}no(,\\w*?){4},Detectar_Peligro", REG_EXTENDED);
-  if (!regexec(&regex, line, 1, &match, 0)) {
-    table[no][Detectar_Peligro]++;
-    return;
-  }
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"si", "no"};
+  checkLine(2, 6, table, row_names, state_names, 2, 4, line);
 }
 
 void opponentWeaponCheckLine(float table[2][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"armado", "desarmado"};
+  checkLine(2, 6, table, row_names, state_names, 3, 3, line);
 }
 void closeHealthCheckLine(float table[2][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"si", "no"};
+  checkLine(2, 6, table, row_names, state_names, 4, 2, line);
 }
 void closeWeaponCheckLine(float table[2][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"si", "no"};
+  checkLine(2, 6, table, row_names, state_names, 5, 1, line);
 }
 void stCheckLine(float table[6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  regex_t regex;
+  regmatch_t match;
+  char regex_str[50];
+  for (int i = 0; i < 6; i++) {
+    sprintf(regex_str, "^(\\w*?,){%d}%s", 6, state_names[i]);
+    regcomp(&regex, regex_str, REG_EXTENDED);
+    if (!regexec(&regex, line, 1, &match, 0)) {
+      table[i]++;
+      return;
+    }
+  }
 }
 void st1CheckLine(float table[6][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  regex_t regex;
+  regmatch_t match;
+  char regex_str[50];
+  for (int i = 0; i < 6; i++) {
+    for (int j = 0; j < 6; j++) {
+      sprintf(regex_str, "%s,%s", state_names[j], state_names[i]);
+      regcomp(&regex, regex_str, REG_EXTENDED);
+      if (!regexec(&regex, line, 1, &match, 0)) {
+        table[i][j]++;
+        return;
+      }
+    }
+  }
 }
 void weaponCheckLine(float table[2][6], char* line) {
+  char* state_names[6] = {"Atacar", "Recoger_Armas", "Recoger_Energia", "Explorar", "Huir", "Detectar_Peligro"};
+  char* row_names[2] = {"armado", "desarmado"};
+  regex_t regex;
+  regmatch_t match;
+  char regex_str[50];
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 6; j++) {
+      sprintf(regex_str, "%s,%s", state_names[j], row_names[i]);
+      regcomp(&regex, regex_str, REG_EXTENDED);
+      if (!regexec(&regex, line, 1, &match, 0)) {
+        table[i][j]++;
+        return;
+      }
+    }
+  }
 }
 
 

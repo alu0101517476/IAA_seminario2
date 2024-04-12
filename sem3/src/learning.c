@@ -3,30 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-enum STATE{
-  Atacar,
-  Recoger_Armas,
-  Recoger_Energia,
-  Explorar,
-  Huir,
-  Detectar_Peligro
-};
-
-enum HEALTH {
-  Baja,
-  Alta
-};
-
-enum YESNO {
-  si,
-  no
-};
-
-enum WEAPON {
-  armado,
-  desarmado
-};
-
 // Get info for tables from line of input
 void healthCheckLine(float table[2][6], char* line);
 void hearNoiseCheckLine(float table[2][6], char* line);
@@ -139,15 +115,15 @@ void normalizeColumn(int n, float table[n]) {
 }
 
 void printTable(int n, int m, float table[n][m], char* row_names[n], char* column_names[m]) {
-  printf("\t");
+  printf("%-10s", "");
   for (int j = 0; j < m; j++) {
-    printf("%-6s\t", column_names[j]);
+    printf("%-10s", column_names[j]);
   }
   puts("\n");
   for (int i = 0; i < n; i++) {
-    printf("%-6s\t", row_names[i]);
+    printf("%-10s", row_names[i]);
     for (int j = 0; j < m; j++) {
-      printf("%.3f\t", table[i][j]);
+      printf("%-10.3f", table[i][j]);
     }
     puts("\n");
   }
